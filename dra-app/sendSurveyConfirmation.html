@@ -1,0 +1,25 @@
+
+<div class="modal-header modal-header-primary">
+       <button type="button" class="close" data-ng-click="closeSendPopup()">&times;</button>
+       <h4 class="modal-title"> {{ modalTitle }} </h4>
+</div> 
+ 
+<div class="modal-body">Engagement ID: {{selectedEngagement.engagementId}} 
+<br> <br> You are about to send this survey to {{participantEmails.length}} recipient/s.
+<div class="alert alert-danger" data-ng-show="{{ errorMessage != null }}" >
+	<span>{{ errorMessage }}</span>
+</div>
+<br/>
+
+<br/>
+	
+<div class="row">
+	<div class="col-lg-2 col-lg-offset-6 padding-right_5">
+		<button class="btn btn-success oButton pull-right" type="button" data-ng-click="closeSendPopup()">Cancel</button>
+	</div>
+	<div class="col-lg-2  padding-left">
+		<button class="btn btn-success gButton big-button  pull-left" type="button" data-ng-click="sendEmail()">Send</button>
+	</div>
+	<br/>
+</div>
+</div>

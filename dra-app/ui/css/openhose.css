@@ -1,0 +1,920 @@
+/*
+// Openhose Visualization SDK Kit (Bottlenose)
+// ----------------------------------
+// v0.8.0
+//
+// Copyright (c)2015 Bottlenose Inc.
+//
+// http://openhose.com
+*/
+
+.rickshaw_graph .detail {
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	z-index: 2;
+	background: rgba(0, 0, 0, 0.1);
+	bottom: 0;
+	width: 1px;
+	transition: opacity 0.25s linear;
+	-moz-transition: opacity 0.25s linear;
+	-o-transition: opacity 0.25s linear;
+	-webkit-transition: opacity 0.25s linear;
+}
+.rickshaw_graph .detail.inactive {
+	opacity: 0;
+}
+.rickshaw_graph .detail .item.active {
+	opacity: 1;
+}
+.rickshaw_graph .detail .x_label {
+	font-family: Arial, sans-serif;
+	border-radius: 3px;
+	padding: 6px;
+	opacity: 0.5;
+	border: 1px solid #e0e0e0;
+	font-size: 12px;
+	position: absolute;
+	background: white;
+	white-space: nowrap;
+}
+.rickshaw_graph .detail .x_label.left {
+	left: 0;
+}
+.rickshaw_graph .detail .x_label.right {
+	right: 0;
+}
+.rickshaw_graph .detail .item {
+	position: absolute;
+	z-index: 2;
+	border-radius: 3px;
+	padding: 0.25em;
+	font-size: 12px;
+	font-family: Arial, sans-serif;
+	opacity: 0;
+	background: rgba(0, 0, 0, 0.4);
+	color: white;
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-top: -1em;
+	white-space: nowrap;
+}
+.rickshaw_graph .detail .item.left {
+	left: 0;
+}
+.rickshaw_graph .detail .item.right {
+	right: 0;
+}
+.rickshaw_graph .detail .item.active {
+	opacity: 1;
+	background: rgba(0, 0, 0, 0.8);
+}
+.rickshaw_graph .detail .item:after {
+	position: absolute;
+	display: block;
+	width: 0;
+	height: 0;
+
+	content: "";
+
+	border: 5px solid transparent;
+}
+.rickshaw_graph .detail .item.left:after {
+	top: 1em;
+	left: -5px;
+	margin-top: -5px;
+	border-right-color: rgba(0, 0, 0, 0.8);
+	border-left-width: 0;
+}
+.rickshaw_graph .detail .item.right:after {
+	top: 1em;
+	right: -5px;
+	margin-top: -5px;
+	border-left-color: rgba(0, 0, 0, 0.8);
+	border-right-width: 0;
+}
+.rickshaw_graph .detail .dot {
+	width: 4px;
+	height: 4px;
+	margin-left: -3px;
+	margin-top: -3.5px;
+	border-radius: 5px;
+	position: absolute;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	background: white;
+	border-width: 2px;
+	border-style: solid;
+	display: none;
+	background-clip: padding-box;
+}
+.rickshaw_graph .detail .dot.active {
+	display: block;
+}
+/* graph */
+
+.rickshaw_graph {
+	position: relative;
+}
+.rickshaw_graph svg {
+	display: block;	
+	overflow: hidden;
+}
+
+/* ticks */
+
+.rickshaw_graph .x_tick {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 0px;
+	border-left: 1px dotted rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+}
+.rickshaw_graph .x_tick .title {
+	position: absolute;
+	font-size: 12px;
+	font-family: Arial, sans-serif;
+	opacity: 0.5;
+	white-space: nowrap;
+	margin-left: 3px;
+	bottom: 1px;
+}
+
+/* annotations */
+
+.rickshaw_annotation_timeline {
+	height: 1px;
+	border-top: 1px solid #e0e0e0;
+	margin-top: 10px;
+	position: relative;
+}
+.rickshaw_annotation_timeline .annotation {
+	position: absolute;
+	height: 6px;
+	width: 6px;
+	margin-left: -2px;
+	top: -3px;
+	border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+.rickshaw_graph .annotation_line {
+	position: absolute;
+	top: 0;
+	bottom: -6px;
+	width: 0px;
+	border-left: 2px solid rgba(0, 0, 0, 0.3);
+	display: none;
+}
+.rickshaw_graph .annotation_line.active {
+	display: block;
+}
+
+.rickshaw_graph .annotation_range {
+        background: rgba(0, 0, 0, 0.1);
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: -6px;
+}
+.rickshaw_graph .annotation_range.active {
+        display: block;
+}
+.rickshaw_graph .annotation_range.active.offscreen {
+        display: none;
+}
+
+.rickshaw_annotation_timeline .annotation .content {
+	background: white;
+	color: black;
+	opacity: 0.9;
+	padding: 5px 5px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+	border-radius: 3px;
+	position: relative;
+	z-index: 20;
+	font-size: 12px;
+	padding: 6px 8px 8px;
+	top: 18px;
+	left: -11px;
+	width: 160px;
+	display: none;
+	cursor: pointer;
+}
+.rickshaw_annotation_timeline .annotation .content:before {
+	content: "\25b2";
+	position: absolute;
+	top: -11px;
+	color: white;
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+}
+.rickshaw_annotation_timeline .annotation.active,
+.rickshaw_annotation_timeline .annotation:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+	cursor: none;
+}
+.rickshaw_annotation_timeline .annotation .content:hover {
+	z-index: 50;
+}
+.rickshaw_annotation_timeline .annotation.active .content {
+	display: block;
+}
+.rickshaw_annotation_timeline .annotation:hover .content {
+	display: block;
+	z-index: 50;
+}
+.rickshaw_graph .y_axis,
+.rickshaw_graph  .x_axis_d3 {
+	fill: none;
+}
+.rickshaw_graph .y_ticks .tick line,
+.rickshaw_graph .x_ticks_d3 .tick {
+	stroke: rgba(0, 0, 0, 0.16);
+	stroke-width: 2px;
+	shape-rendering: crisp-edges;
+	pointer-events: none;
+}
+.rickshaw_graph .y_grid .tick,
+.rickshaw_graph .x_grid_d3 .tick {
+	z-index: -1;
+	stroke: rgba(0, 0, 0, 0.20);
+	stroke-width: 1px;
+	stroke-dasharray: 1 1;
+}
+.rickshaw_graph .y_grid .tick[data-y-value="0"] {
+	stroke-dasharray: 1 0;
+}
+.rickshaw_graph .y_grid path,
+.rickshaw_graph .x_grid_d3 path  {
+	fill: none;
+	stroke: none;
+}
+.rickshaw_graph .y_ticks path,
+.rickshaw_graph .x_ticks_d3 path {
+	fill: none;
+	stroke: #808080;
+}
+.rickshaw_graph .y_ticks text,
+.rickshaw_graph .x_ticks_d3 text {
+	opacity: 0.5;
+	font-size: 12px;
+	pointer-events: none;
+}
+.rickshaw_graph .x_tick.glow .title,
+.rickshaw_graph .y_ticks.glow text {
+	fill: black;
+	color: black;
+	text-shadow: 
+		-1px 1px 0 rgba(255, 255, 255, 0.1),
+		1px -1px 0 rgba(255, 255, 255, 0.1),
+		1px 1px 0 rgba(255, 255, 255, 0.1),
+		0px 1px 0 rgba(255, 255, 255, 0.1),
+		0px -1px 0 rgba(255, 255, 255, 0.1),
+		1px 0px 0 rgba(255, 255, 255, 0.1),
+		-1px 0px 0 rgba(255, 255, 255, 0.1),
+		-1px -1px 0 rgba(255, 255, 255, 0.1);
+}
+.rickshaw_graph .x_tick.inverse .title,
+.rickshaw_graph .y_ticks.inverse text {
+	fill: white;
+	color: white;
+	text-shadow: 
+		-1px 1px 0 rgba(0, 0, 0, 0.8),
+		1px -1px 0 rgba(0, 0, 0, 0.8),
+		1px 1px 0 rgba(0, 0, 0, 0.8),
+		0px 1px 0 rgba(0, 0, 0, 0.8),
+		0px -1px 0 rgba(0, 0, 0, 0.8),
+		1px 0px 0 rgba(0, 0, 0, 0.8),
+		-1px 0px 0 rgba(0, 0, 0, 0.8),
+		-1px -1px 0 rgba(0, 0, 0, 0.8);
+}
+.rickshaw_legend {
+	font-family: Arial;
+	font-size: 12px;
+	color: white;
+	background: #404040;
+	display: inline-block;
+	padding: 12px 5px; 
+	border-radius: 2px;
+	position: relative;
+}
+.rickshaw_legend:hover {
+	z-index: 10;
+}
+.rickshaw_legend .swatch {
+	width: 10px;
+	height: 10px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.rickshaw_legend .line {
+	clear: both;
+	line-height: 140%;
+	padding-right: 15px;
+}
+.rickshaw_legend .line .swatch {
+	display: inline-block;
+	margin-right: 3px;
+	border-radius: 2px;
+}
+.rickshaw_legend .label {
+	margin: 0;
+	white-space: nowrap;
+	display: inline;
+	font-size: inherit;
+	background-color: transparent;
+	color: inherit;
+	font-weight: normal;
+	line-height: normal;
+	padding: 0px;
+	text-shadow: none;
+}
+.rickshaw_legend .action:hover {
+	opacity: 0.6;
+}
+.rickshaw_legend .action {
+	margin-right: 0.2em;
+	font-size: 10px;
+	opacity: 0.2;
+	cursor: pointer;
+	font-size: 14px;
+}
+.rickshaw_legend .line.disabled {
+	opacity: 0.4;
+}
+.rickshaw_legend ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	margin: 2px;
+	cursor: pointer;
+}
+.rickshaw_legend li {
+	padding: 0 0 0 2px;
+	min-width: 80px;
+	white-space: nowrap;
+}
+.rickshaw_legend li:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 3px;
+}
+.rickshaw_legend li:active {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 3px;
+}
+
+.summary-number {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+.summary-number .number {
+  text-align: center;
+  width: 100%;
+  color: #444;
+}
+.summary-number .number .value {
+  display: block;
+  font-size: 60px;
+  line-height: 60px;
+  height: 60px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0;
+}
+.summary-number .change-up .value,
+.summary-number .change-down .value {
+  font-size: 28px;
+  line-height: 40px;
+  height: 40px;
+  margin-left: -10px;
+}
+.summary-number .change-up .value {
+  color: #6dde70;
+}
+.summary-number .change-up .value:before {
+  content: "\2191";
+  font-size: 34px;
+  vertical-align: top;
+  line-height: 29px;
+  margin-right: -5px;
+}
+.summary-number .change-down .value {
+  color: #E86F6F;
+}
+.summary-number .change-down .value:before {
+  content: "\2193";
+  font-size: 34px;
+  vertical-align: top;
+  line-height: 29px;
+  margin-right: -5px;
+}
+.summary-number .change-none.previous .value {
+  font-size: 22px;
+}
+.summary-number .visualization.summary-number {
+  margin-top: 30px;
+  padding-left: 0;
+}
+.summary-number .number .value {
+  font-size: 44px;
+  line-height: 44px;
+  height: 60px;
+}
+.summary-number .previous .value {
+  font-size: 28px;
+  line-height: 40px;
+  height: 40px;
+}
+.summary-number .previous span {
+  text-transform: uppercase;
+  display: block;
+  font-size: 10px;
+  line-height: 12px;
+}
+.summary-number .score-label {
+  font-size: 14px !important;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-top: -15px;
+  margin-bottom: 0;
+}
+.leaderboard .row {
+  position: relative;
+  background-color: #fcfcfc;
+  line-height: 24px;
+  z-index: 0;
+  text-shadow: 0 1px 0 #fff;
+  border-bottom: 1px solid #eee;
+}
+.leaderboard .row div {
+  display: inline-block;
+  z-index: 10;
+  padding: 5px;
+}
+.leaderboard div.leader-number {
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  background: #f6f6f6;
+  width: 28px;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  margin-right: 8px;
+}
+.leaderboard div.leader-title {
+  font-weight: bold;
+  color: #173b59;
+}
+.leaderboard div.leader-value {
+  position: absolute;
+  right: 12px;
+  top: 1px;
+  font-weight: bold;
+  font-size: 11px;
+}
+.leaderboard div.leader-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px #333;
+  z-index: -1;
+  opacity: 0.2;
+  padding: 0;
+}
+.pie {
+  position: relative;
+}
+.pie text {
+  pointer-events: none;
+}
+.pie .pie-hover {
+  position: absolute;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: solid #000000 1px;
+  border-radius: 6px;
+  padding: 5px;
+}
+.pie .legend-color {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+}
+.pie .legend {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+/* Legend */
+.legend {
+  cursor: pointer;
+  position: relative;
+}
+.rickshaw_legend li.line,
+.rickshaw_legend li.area {
+  display: inline-block;
+  padding-right: 5px;
+}
+.rickshaw_legend .line .swatch,
+.rickshaw_legend area .swatch {
+  float: left;
+  margin-left: 0;
+  margin-right: 3px;
+}
+.rickshaw_legend .label {
+  float: left;
+}
+.rickshaw_legend .action {
+  float: left;
+}
+.graph-highlight-dot {
+  pointer-events: none;
+}
+.legend.rickshaw_legend {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #444;
+  background: none;
+  display: block;
+  padding: 6px 5px;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 100;
+  right: 10px;
+  top: 10px;
+}
+.rickshaw_graph .detail .left.item {
+  -ms-transform: translate(-100%, 0);
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+  margin-left: -1em;
+}
+.rickshaw_graph .detail .item:before {
+  content: "";
+}
+.rickshaw_graph .detail .active.left.item:after {
+  content: "\25b8";
+  position: absolute;
+  right: -2px;
+  top: 1px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+  width: 4px;
+  text-align: center;
+  display: inline-block;
+}
+.rickshaw_graph .detail .x_label.left {
+  left: 0;
+}
+.rickshaw_graph .detail .x_label.right {
+  right: 0;
+}
+.rickshaw_graph .detail .active.right.item:before {
+  content: "\25b8";
+  position: absolute;
+  left: 2px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+  width: 0;
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.rickshaw_graph .y_grid text {
+  display: none ;
+}
+.rickshaw_graph circle {
+  pointer-events: none;
+}
+.rickshaw_graph .x_axis_container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.rickshaw_graph .annotation_area {
+  position: absolute;
+  top: 0;
+  bottom: -6px;
+  width: 0px;
+  background-color: rgba(70, 130, 180, 0.2);
+  pointer-events: none;
+  border-right: solid 2px rgba(0, 0, 0, 0.3);
+}
+.rickshaw_annotation_timeline .annotation .on_annotation_line {
+  top: 8px;
+}
+.rickshaw_annotation_timeline .annotation:hover .content {
+  display: block;
+}
+.rickshaw_annotation_timeline .annotation.label-always .content {
+  display: block;
+}
+.rickshaw_annotation_timeline .annotation .content {
+  height: 25px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.rickshaw_annotation_timeline .annotation {
+  cursor: pointer !important;
+}
+.rickshaw_annotation_timeline .annotation .content:hover {
+  white-space: nowrap;
+  max-width: none;
+}
+.rickshaw_graph .detail .x_label,
+.hover-container {
+  font-family: Arial, sans-serif;
+  opacity: 0.95 !important;
+  padding: 0;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  position: absolute;
+  background: white;
+  white-space: nowrap;
+}
+.rickshaw_graph .detail .x_label table,
+.hover-container table {
+  border-collapse: collapse;
+}
+.rickshaw_graph .detail .x_label tr,
+.hover-container tr {
+  font-size: 13px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.rickshaw_graph .detail .x_label tr:last-child,
+.hover-container tr:last-child {
+  border-bottom: 0;
+}
+.rickshaw_graph .detail .x_label tr td,
+.hover-container tr td,
+.rickshaw_graph .detail .x_label tr th,
+.hover-container tr th {
+  padding: 3px 10px;
+  font-weight: bold;
+}
+.rickshaw_graph .detail .x_label tr th,
+.hover-container tr th {
+  text-align: left;
+}
+.rickshaw_graph .detail .x_label .percentage,
+.hover-container .percentage {
+  font-weight: normal;
+  font-size: 11px;
+  padding-left: 3px;
+}
+.rickshaw_graph .detail .x_label tr.header,
+.hover-container tr.header {
+  color: #333;
+}
+.rickshaw_graph .detail .x_label tr.header td,
+.hover-container tr.header td {
+  font-weight: normal;
+}
+.rickshaw_graph .detail .x_label tr.header span,
+.hover-container tr.header span {
+  display: block;
+  font-weight: bold;
+}
+.rickshaw_graph .detail .x_label .hover-label,
+.hover-container .hover-label {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.table {
+  margin-bottom: 0;
+}
+.table table {
+  width: 100%;
+}
+.table thead tr {
+  background-color: #F2F1ED;
+}
+.table th {
+  text-align: left;
+}
+.table td.label {
+  min-width: 50%;
+}
+.table td {
+  padding: 2px;
+}
+.table tr.odd {
+  background-color: #fcfcfc;
+}
+.table tr.even {
+  background-color: #f6f6f6;
+}
+.table .inner {
+  height: 300px;
+  min-height: 300px;
+  overflow-y: auto;
+}
+.table .image {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-top: 2px;
+  vertical-align: top;
+  margin-right: 8px;
+  background: #d9d9d9;
+}
+.table img {
+  height: 18px;
+  margin-right: 8px;
+  vertical-align: top;
+  display: none;
+}
+.table .color-label {
+  border-left: 6px solid;
+}
+.table .change-up {
+  color: #6dde70;
+}
+.table .change-up:before {
+  font-family: 'bottlenoseregular';
+  content: "\f07A";
+  font-size: 22px;
+  vertical-align: top;
+  line-height: 12px;
+  margin-right: 0;
+  width: 10px;
+}
+.table .change-down {
+  color: #E86F6F;
+}
+.table .change-down:before {
+  font-family: 'bottlenoseregular';
+  content: "\f079";
+  font-size: 22px;
+  vertical-align: top;
+  line-height: 12px;
+  margin-right: 0px;
+  width: 10px;
+}
+.motion-scatter .graph-container svg {
+  width: 100%;
+}
+.motion-scatter .chart {
+  shape-rendering: optimizeSpeed;
+}
+.motion-scatter .dot {
+  fill: #0dabdd;
+  stroke: #0a80a6;
+  stroke-width: 1.2;
+}
+.motion-scatter .dot:hover {
+  fill: #173b59;
+  stroke: #173b59;
+  opacity: 0.8 !important;
+}
+.motion-scatter .main text {
+  font: 12px sans-serif;
+}
+.motion-scatter .axis line,
+.motion-scatter .axis path {
+  stroke: black;
+  stroke-width: 1;
+  fill: none;
+  shape-rendering: crispEdges;
+}
+.motion-scatter .axis .label {
+  pointer-events: none;
+}
+.motion-scatter path.trend-line {
+  stroke-width: 1;
+  fill: none;
+  stroke: #F05A28;
+}
+.motion-scatter .tooltip {
+  background-color: #666;
+  color: #fff;
+  margin-top: 20px;
+  padding: 4px;
+  border-radius: 3px;
+}
+.time-line {
+  height: 50px;
+  margin-right: 291px;
+}
+.time-line .visualization {
+  height: 100%;
+}
+.time-line .tick line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.time-line .domain {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.time-line .hover-indicator {
+  fill: orange;
+  stroke-width: 1;
+  stroke: #d08545;
+}
+.time-line .position-indicator {
+  fill: blue;
+  stroke-width: 1;
+  stroke: #000;
+}
+.time-line .sparkline {
+  fill: none;
+  stroke-width: 1.2;
+  stroke: #ccc;
+  shape-rendering: auto;
+}
+.time-line .background-rect {
+  opacity: 0;
+  cursor: pointer;
+}
+.time-line .axis path {
+  shape-rendering: crispEdges;
+}
+.time-line .indicators text {
+  font: normal 12px sans-serif;
+}
+.time-line .text-back {
+  fill: white;
+}
+.bar {
+  height: 100%;
+  position: relative;
+}
+.bar .hover-container {
+  color: black;
+  position: absolute;
+  top: 0px;
+  pointer-events: none;
+}
+.bar .hover-line {
+  height: 100%;
+  border: 1px solid black;
+  position: absolute;
+  top: 0;
+}
+.bar .bars {
+  height: 100%;
+  display: table;
+  width: 100%;
+}
+.bar .group-label {
+  display: inline-block;
+  text-align: center;
+}
+.bar .column {
+  height: 100%;
+  display: table-cell;
+  color: white;
+  vertical-align: bottom;
+}
+.bar .column .bar-bar {
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: center;
+  position: relative;
+  border-right: solid 1px white;
+  border-left: solid 1px white;
+}
+.bar .column .bar-bar .bar-label.up::before {
+  content: '↑';
+  display: block;
+}
+.bar .column .bar-bar .bar-label.down::before {
+  content: '↓';
+  display: block;
+}
+.bar .column .bar-bar .bar-label.no-change::before {
+  content: '';
+  display: block;
+}
+.bar .column .ontop {
+  position: relative;
+  color: black;
+}
+.bar .column .bar-label > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: 50%;
+}
+.bar .column .bar-image {
+  width: 50%;
+  height: auto;
+  position: absolute;
+  top: -125%;
+  left: 25%;
+}

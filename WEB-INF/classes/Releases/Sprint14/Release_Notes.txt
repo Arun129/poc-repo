@@ -1,0 +1,13 @@
+Environment Variables to be removed
+
+OAUTH2_REDIRECT_URL
+
+-----------------------------------------------------------
+
+Environment Variables to be added
+
+R_ALGO_FILENAME=analysis.R
+R_ALGO_DIRECTORY=Development
+R_ALGO_AUTHOR=dra
+R_ALGO_VERSION=Latest
+DRA_REGION=USA / AU

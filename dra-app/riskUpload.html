@@ -1,0 +1,40 @@
+<div class="browse_section">
+	<div class="modal-header modal-header-primary">
+		<button type="button" class="close"
+			data-ng-click="closeRiskUploadPopup()">&times;</button>
+		<h4 class="modal-title">Browse</h4>
+	</div>
+	<div class="modal-body pull-left full-width">
+
+		<div class="row">
+			<div class="col-lg-9 col-lg-offset-3">
+				<div class="template-download">
+					<a class="small" target="_blank" href="./BulkUpload_Risk_Template.xlsx">Download Template</a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+				<div class=" col-lg-3 choose-label choose-label-margin padding-right"><p>Choose a file:</p></div>
+				<div class="col-lg-9 choose-label-margin js" id="file">
+					<input type="file" id='inputFile1' file-model="riskFile" class="file-input inputfile inputfile-1" onchange="angular.element(this).scope().uploadRiskObj(this)" />
+					<label id='text' for="inputFile1"></label>
+				</div>
+		</div>
+		<br>
+		<br>
+
+		<div class="row">
+			<div class="col-lg-2  col-lg-offset-6 padding-right_5">
+				<button class="btn btn-success oButton pull-right" data-ng-click="closeRiskUploadPopup()">Cancel</button>
+			</div>
+				<div class="col-lg-2 padding-left">
+					
+					<button class="btn btn-success gButton big-button  pull-left" data-ng-click="finaluploadRisks()">Upload</button>
+				</div>
+		</div>
+	</div>
+</div>
+
+	

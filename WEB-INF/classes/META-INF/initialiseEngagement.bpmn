@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_0PbQsHFAEeWJQpEA-aWE3A" exporter="camunda modeler" exporterVersion="2.7.0" targetNamespace="http://activiti.org/bpmn">
+  <bpmn2:process id="InitialiseEngagementProcess" name="Initialise Engagement" isExecutable="true">
+    <bpmn2:serviceTask id="InitialiseEngagement" camunda:class="com.kpmg.dra.engagement.InitialiseEngagement" name="Initialise Engagement">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="InitialiseEngagement" targetRef="EditBaseModel"/>
+    <bpmn2:userTask id="EditBaseModel" camunda:assignee="${initiator}" camunda:formKey="app:doTask.jsp" name="Edit Base Model">
+      <bpmn2:extensionElements>
+        <camunda:taskListener class="com.kpmg.dra.engagement.TaskListener" event="assignment"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:endEvent id="EndEvent_1">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="EditBaseModel" targetRef="EndEvent_1"/>
+    <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="InitialiseEngagement">
+      <bpmn2:compensateEventDefinition id="CompensateEventDefinition_1" waitForCompletion="true"/>
+    </bpmn2:boundaryEvent>
+    <bpmn2:serviceTask id="DeleteBaseModel" camunda:class="com.kpmg.dra.engagement.DeleteBaseModel" name="Delete Base Model" isForCompensation="true"/>
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" name="" sourceRef="StartEvent_1" targetRef="InitialiseEngagement"/>
+    <bpmn2:association id="Association_1" sourceRef="BoundaryEvent_1" targetRef="DeleteBaseModel"/>
+  </bpmn2:process>
+  <bpmn2:error id="Error_1" errorCode="ExistingEngagement" name="Existing Engagement"/>
+  <bpmn2:error id="Error_2" errorCode="NoEngagementName" name="No Engagement Name"/>
+  <bpmn2:error id="Error_3" errorCode="TechnicalError" name="Technical Error"/>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="InitialiseEngagementProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_17" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="408.0" y="241.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="426.0" y="282.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_19" bpmnElement="InitialiseEngagement">
+        <dc:Bounds height="80.0" width="100.0" x="528.0" y="220.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_UserTask_12" bpmnElement="EditBaseModel">
+        <dc:Bounds height="80.0" width="100.0" x="696.0" y="219.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="_BPMNShape_ServiceTask_19" targetElement="_BPMNShape_UserTask_12">
+        <di:waypoint xsi:type="dc:Point" x="628.0" y="260.0"/>
+        <di:waypoint xsi:type="dc:Point" x="658.0" y="260.0"/>
+        <di:waypoint xsi:type="dc:Point" x="658.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="696.0" y="259.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="658.0" y="259.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_16" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="886.0" y="234.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="_BPMNShape_UserTask_12" targetElement="_BPMNShape_EndEvent_16">
+        <di:waypoint xsi:type="dc:Point" x="796.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="841.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="841.0" y="252.0"/>
+        <di:waypoint xsi:type="dc:Point" x="886.0" y="252.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_20" bpmnElement="DeleteBaseModel">
+        <dc:Bounds height="80.0" width="100.0" x="515.0" y="360.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_BoundaryEvent_12" bpmnElement="BoundaryEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="547.0" y="282.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_Association_1" bpmnElement="Association_1" sourceElement="_BPMNShape_BoundaryEvent_12" targetElement="_BPMNShape_ServiceTask_20">
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="318.0"/>
+        <di:waypoint xsi:type="dc:Point" x="565.0" y="360.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="_BPMNShape_StartEvent_17" targetElement="_BPMNShape_ServiceTask_19">
+        <di:waypoint xsi:type="dc:Point" x="444.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="528.0" y="260.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="483.0" y="260.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

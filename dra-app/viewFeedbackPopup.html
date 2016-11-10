@@ -1,0 +1,21 @@
+<div class="modal-header modal-header-primary">
+       <button type="button" class="close" data-ng-click="closePopup()">&times;</button>
+       <h1 class="modal-title">View Feedback </h1>
+</div> 
+<div class="modal-body">
+		<p><label>From:</label>  <span>{{feedback.participantName}}</span> <span>{{feedback.participantLname}}</span>  </p>
+		<p><label>Email:</label>  <span>{{feedback.emailId}}</span></p>
+		<p><label>Received:</label>  <span>{{feedback.ftimeFormatted }}</span></p>
+<hr>
+	<form role="form">
+		<div class="comments  feedback-popup">
+		  <label for="usr">Are there any additional risks or comments you think should be included in the questionnaire?</label>
+		  	<textarea maxlength="500"  required="required" rows="8"  class="form-control" disabled="disabled" >{{feedback.a1}}</textarea>
+		</div>
+		<div class="long-comments top-padding-large  feedback-popup" >
+		  <label for="usr">Comments</label>
+			<textarea maxlength="500" required="required" class="form-control" rows="8" disabled="disabled" >{{feedback.a4}}</textarea>
+		</div>
+		<br><br>
+	</form>
+</div>

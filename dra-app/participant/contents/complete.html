@@ -1,0 +1,38 @@
+<header data-ng-controller="participantHeaderCtrl" class="above-all container padding-none participant-header">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			  <div class="navbar-header">
+					<div class="navbar-brand padding-none">
+						<span class="navbar-logo">
+							<img src="./ui/img/kpmg-header-logo.png" alt="logo" class="margin-sides-large margin-top-kpmg-icon"/>
+						</span>
+						<div class="float-right">
+							<div class="participant-header-font-style-safari header-margin-top padding-none float-left">
+								<span class="header-font-style">Dynamic Risk Assessment&nbsp;&nbsp;&nbsp;</span>
+							</div>
+							<div class="participant-header-font-style-safari header-margin-top padding-none float-left">
+							<span class="kpmg-blue-bg padding-small" data-ng-show="engagement.survey.published">{{'Survey' | translate}}</span>
+							<span class="kpmg-blue-bg padding-small" data-ng-show="!engagement.survey.published">{{'Draft Survey' | translate}}</span>
+							</div>
+						</div>
+					</div>
+			  </div>
+		</div>
+	</nav>
+</header>
+<div class="container padding-large"  ng-controller="surveyLoginCtrl">
+<!-- start  save success message  -->
+	<div class="alert alert-info cs_success_alert" data-ng-show="savingFeedback">
+		<div>
+			<span class="glyphicon glyphicon-refresh glyphicon-spin" data-ng-show="savingInProgress"></span>&nbsp; &nbsp; Feedback sent successfully.
+		</div>
+	</div>
+<!-- end  save success message  -->
+	<div class="jumbotron bg-white" data-ng-show="!closed">
+		<h1 style="color: #009cdc;">Our research has shown there is no substitute for experience, and thank you for sharing yours.</h1>
+		<p style="color: #676767">You can now close the window.</p>
+	</div>
+	<div class="jumbotron bg-white" data-ng-show="closed">
+		<h1>Sorry, this survey has been closed.</h1>
+	</div>
+</div>

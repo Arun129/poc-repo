@@ -1,0 +1,32 @@
+<header data-ng-controller="participantHeaderCtrl" class="above-all container padding-none participant-header">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			  <div class="navbar-header">
+					<div class="navbar-brand padding-none">
+						<span class="navbar-logo">
+							<img src="./ui/img/kpmg-header-logo.png" alt="logo" class="margin-sides-large margin-top-kpmg-icon"/>
+						</span>
+						<div class="float-right">
+							<div class="participant-header-font-style-safari header-margin-top padding-none float-left">
+								<span class="header-font-style">Dynamic Risk Assessment&nbsp;&nbsp;&nbsp;</span>
+							</div>
+							<div class="participant-header-font-style-safari header-margin-top padding-none float-left">
+							<span class="kpmg-blue-bg padding-small" data-ng-show="engagement.survey.published">{{'Survey' | translate}}</span>
+							<span class="kpmg-blue-bg padding-small" data-ng-show="!engagement.survey.published">{{'Draft Survey' | translate}}</span>
+							</div>
+						</div>
+					</div>
+			  </div>
+			  <div class="nav navbar-nav float-right header-margin-top-small padding-none hidden-xs hidden-sm">
+			  		
+			  </div>
+		</div>
+	</nav>
+</header>
+<div class="container">
+	<div class="jumbotron bg-white">
+		<h1>Session Timeout</h1>
+		<p>Sorry your session timed out after a period of inactivity.</p>
+		<p>Please re-enter the survey by clicking the 'Start Survey' button on the email that was sent to you.</p>
+	</div>
+</div>

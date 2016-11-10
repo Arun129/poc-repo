@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="12.665553mm"
+   height="8.1648102mm"
+   viewBox="0 0 44.877944 28.93043"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="bowTie.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient4279"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#7ab800;stop-opacity:1;"
+         offset="0"
+         id="stop4281" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="-13.72735"
+     inkscape:cy="13.120378"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="987"
+     inkscape:window-x="1432"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     showborder="false" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-321.53122,-370.96307)">
+    <g
+       id="bowTieButton"
+       inkscape:label="#g4209">
+      <rect
+         y="370.96307"
+         x="321.53122"
+         height="28.930429"
+         width="44.877945"
+         id="rect4173"
+         style="fill:#7ab800;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         ry="3.1819806" />
+      <g
+         transform="matrix(0.76172169,0,0,0.76172169,81.89743,92.093596)"
+         id="g4204">
+        <path
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:transform-center-x="0.40923707"
+           inkscape:transform-center-y="0.095616888"
+           d="m 344.34232,384.32424 c -5.71137,3.75704 -13.13578,8.11508 -18.91559,11.89845 l 0.14329,-22.20902 c 6.5041,3.60882 12.13741,6.84755 18.6702,10.4128 z"
+           id="path4155"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc" />
+        <path
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:transform-center-x="-0.40923707"
+           inkscape:transform-center-y="0.095616888"
+           d="m 343.76402,384.27651 c 5.71137,3.75704 13.13578,8.11508 18.91559,11.89845 l -0.14329,-22.20902 c -6.5041,3.60882 -12.13741,6.84756 -18.6702,10.4128 z"
+           id="path4155-6"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc" />
+        <ellipse
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path4192"
+           cx="344.09747"
+           cy="384.35489"
+           rx="4.4218116"
+           ry="3.9868789" />
+      </g>
+    </g>
+  </g>
+</svg>

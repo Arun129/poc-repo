@@ -1,0 +1,853 @@
+<div id="createoreditSurvey" data-ng-controller="createSurvey"
+	class="container padding-large">
+
+	
+		<div class="row">
+			<div class="col-md-12">
+				<div class="breadcrum padding-large paddingleftright">
+					<a href="engagementManager.html#/clientList" translate>My Clients</a> 
+					<span class="glyphicon glyphicon-menu-right"></span>
+					<a href="engagementManager.html#/dashboard/{{engagement.taskId}}">{{engagement.clientName}}</a>
+					<span class="glyphicon glyphicon-menu-right"></span>
+					<a class="active" >{{engagement.engagementId}}</a>
+				</div>
+			</div>
+		</div>		
+	
+
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fullwidth">
+			<div class="row">
+				<div class="col-md-12 padding-none">
+					<div class="padding-none">
+						<h1 class="headtitle">{{ 'Engagements' | translate }} <span data-ng-show="allEngagement != null && allEngagement.length > 0"> (Count: {{ allEngagement.length }})</span>
+							<span class="glyphicon glyphicon-refresh" data-ng-click="loadEngagements()" ></span>
+						</h1>
+						
+						<div class="engage_graybg">
+							<div class="row">
+								<div class="col-sm-4">
+									<p>
+										 Engagement ID
+									</p>
+									<ul class="list-inline">
+										<li class="idicon fontblue text-xxlarge">
+											<span class="engagementlabel">
+												<img src="ui/img/label.png" alt="" title="" data-ng-show="!selectedEngagement.survey.closed" class="icon-lg">  
+												<img src="ui/img/labelblock.png" alt="" title=""  data-ng-show="selectedEngagement.survey.closed" class="icon-lg">	
+											</span>
+											<span class="">{{engagement.engagementId}}</span></li>
+										<li><a class="fontblue text-xlarge" href="#/editengagement/{{engagement.taskId}}" >Edit</a>
+									</ul>
+									
+								</div>
+								<div class="col-sm-8">
+									<p class="padding-sides-medium">Client Name</p>
+									<p class="fontblue text-xxlarge padding-large font-twenty">{{engagement.clientName}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="survey_tab">
+						<ul>
+							<li>
+								<div class="tab">Surveys</div>
+							</li>
+							<li data-ng-hide="surveyCreated">
+								<button class="tab new active" data-ng-hide="surveyCreated"></button>
+								<p data-ng-hide="surveyCreated" class="bold">New</p>
+							</li>
+							<li data-ng-show="surveyCreated">
+								<button class="tab prepare active" data-ng-show="surveyCreated"></button>
+								<p data-ng-hide="survey.published" class="bold">Prepare</p>
+								<p data-ng-show="survey.published" class="bold">View</p>
+							</li>
+							<li>
+								<button id="send" class="tab send" data-ng-click="navigateTosendView()" data-ng-disabled="!survey.published || survey.closed"></button>
+								<p class="bold">Send</p>
+							</li>
+							<li>
+								<button class="tab response"   data-ng-click="navigateTodashboard()"></button>
+								<p class="bold"> Responses</p>
+							</li>
+						</ul>
+					</div>
+
+					<div class="skyblue_strip" id="surveyHeading">
+						<div class="row">
+							<div class="col-xs-5" >
+								<p class="no-vert-margin text-xlarge font_white"
+									data-ng-hide="surveyCreated"
+									data-ng-show="saveInProgress">New Survey</p>
+								<p class="no-vert-margin text-xlarge font_white"
+									data-ng-show="surveyCreated && !survey.published"
+									data-ng-show="publishInProgress">Prepare Survey</p>
+								<p class="no-vert-margin text-xlarge font_white"
+									data-ng-show="surveyCreated && (survey.published || survey.closed)"
+									data-ng-show="publishInProgress">View Survey</p>
+							</div>
+							<div class="col-xs-7">
+								<p class="no-vert-margin text-medium font_white"
+								 data-ng-hide="surveyCreated && (survey.published || survey.closed)">
+								 	<span class="icon-Unpublished_2">
+                <span class="path1"></span><span class="path2"></span>
+                </span>
+									Unpublished / Draft</p>
+								<p class="no-vert-margin text-medium font_white published" 
+								data-ng-show="surveyCreated && survey.published && !survey.closed">
+								<span class="icon-Published_2">
+                					<span class="path1"></span><span class="path2"></span>
+                				</span>
+									Published</p>
+								<p class="no-vert-margin text-medium font_white "
+								data-ng-show="surveyCreated && survey.closed">
+								 <span class="icon-Closed_2">
+                					<span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                				</span>
+								
+									Closed</p>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="alert alert-danger" id="reqFieldAlert"
+						data-ng-show="showReqFieldError">
+						<span translate>* Required field can not be empty !</span>
+					</div>
+
+					<div class="alert alert-danger" id="minRiskAlert"
+						data-ng-show="showMinRiskError">
+						<span>Sorry, you must have at least {{ minimumRiskRequired }} risks for your survey !</span>
+					</div>
+
+					<div class="alert alert-danger" id="maxRiskAlert"
+						data-ng-show="showMaxRiskError">
+						<span>Maximum number of risks are restricted to {{
+							maximumRiskRequired }}!</span>
+					</div>
+
+					<div class="alert alert-danger" id="riskDuplicatedAlert"
+						data-ng-show="showRiskDuplicatedAlert">
+						<span> Risk name - '{{ duplicatedRiskName }}' already
+							exists, please rename the risk name!</span>
+					</div>
+
+					<div class="col-lg-12 col-xs-12 paddingleftright">
+						<h1 data-ng-show="survey.published"
+							class="padding-large headtitle paddingleftright " translate>View
+							Survey</h1>
+					</div>
+
+
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-large"
+							data-ng-show="showUploadError || showUploadSuccess">
+							<div class="alert alert-danger" id="reqFieldAlert"
+								data-ng-show="showUploadError">
+								<span class="angular-with-newlines"> {{uploadErrorMessage}}</span>
+							</div>
+							<div class="alert alert-success" data-ng-show="showUploadSuccess">
+								<span>{{uploadSuccessMessage}}</span>
+							</div>
+						</div>
+					</div>
+
+
+
+					<div class="padding-large">
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="bdr_btm">
+									<form role="form" name="userForm" class="padding-none" confirm-on-exit novalidate>
+									<div class="row">
+										<div class="col-md-12 bdr_btm" ng-hide="surveyCreated">
+											<div class="row">
+												<div class="col-md-6 col-md-offset-3">
+													<label class="gray_color">Copy survey from previous
+														engagement:</label>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-4 col-md-offset-3">
+													<div class="form-group ">
+														<select class="form-control" id="sel1"
+															ng-model="selectedEngagementValue"
+															ng-change="changedValue(selectedEngagementValue)">
+															<option value="">No Template</option>
+															<option ng-repeat="eng in otherEngagements" 
+																value="{{eng.taskId}}">{{eng.engagementId}}</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="row">
+															<div class="col-md-5">
+																<div class="form-group" data-show-errors>
+																	<label class="gray_color">No.Respondents</label> <input type="text"
+																		name="usrname" class="form-control" type="text"
+																		onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 8 || event.charCode == 46'
+																		id="noOfRespondentId" onblur="toNumeric(id)"
+																		data-ng-model="survey.noOfRespondent"
+																		name="noOfRespondent" maxlength="4"
+																		data-ng-value="survey.noOfRespondent" required
+																		data-ng-disabled="survey.published">
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-6">
+																<div class="form-group " data-show-errors>
+																	<label class="gray_color">Country</label> <select
+																		data-ng-model="survey.country" name="country"
+																		class="form-control selectpicker" required
+																		data-ng-disabled="survey.published">
+																		<option
+																			data-ng-repeat="country in staticContent.countries"
+																			value="{{country.code}}">{{country.name}}</option>
+																	</select>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group" data-show-errors>
+																	<label class="gray_color">Industry</label> <select
+																		class="form-control selectpicker"
+																		data-ng-model="survey.industry" name="industry"
+																		class="form-control sharp-edges" required
+																		data-ng-disabled="survey.published">
+																		<option
+																			data-ng-repeat="industry in staticContent.industries"
+																			value="{{industry}}">{{industry}}</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-6">
+																<div class="form-group" data-show-errors>
+																	<label class="gray_color">Region</label> <select
+																		class="form-control selectpicker"
+																		data-ng-model="survey.region" name="region" required
+																		data-ng-disabled="survey.published">
+																		<option
+																			data-ng-repeat="region in staticContent.regions"
+																			value="{{region}}">{{region}}</option>
+																	</select>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group" data-show-errors>
+																	<label class="gray_color">Business Unit</label> <select
+																		data-ng-model="survey.businessUnit"
+																		name="businessUnit" class="form-control sharp-edges"
+																		required data-ng-disabled="survey.published">
+																		<option
+																			data-ng-repeat="businessUnit in staticContent.businessUnits"
+																			value="{{businessUnit}}">{{businessUnit}}</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-3 col-md-offset-3 " data-ng-hide="survey.published || !(surveyCreated)">
+														<button class="btn btn-default pull-right blue-btn"
+															ng-click="navigateToScreen('shareDraft')">Go to
+															Share Draft</button>
+														<button class="btn btn-default pull-right blue-btn"
+															ng-click="navigateToScreen('publish')">Go to
+															Publish</button>
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+													
+														<h4 class="font_blue">Risk List</h4>
+														
+														<div class="panel panel-default sharp-edges blue-border">
+															<div class="panel-body ">
+																<div class="row">
+																	<div class="col-md-6 col-sm-12">
+																		<div data-ng-hide="survey.published">
+																			<span class="gray_color">Select file to bulk upload:</span>
+																			<button
+																				class="btn btn-default success gButton medium-button btn-success "
+																				ng-disabled="survey.published" 
+																				data-ng-click="riskUpload()">Browse</button>
+																		</div>
+																	</div>
+																	
+																	<div class="col-md-6 col-sm-12">
+																		<div class="row">
+																			<div class="col-xs-9">
+																				<div class="row">
+																					<div class="col-md-8">
+																						<div class="pull-right">
+																							<span class="clientcount width100 bgtransparent">Total Risks:</span>
+																						</div>
+																					</div>
+																					<div class="col-md-4">
+																						<span class="clientcount width100">{{survey.risks.length}}</span>
+																					</div>
+																				</div>
+																				
+																				
+																				
+																			</div>
+																			<div class="col-xs-3">
+																				<div class="pull-left">
+																						<div data-ng-hide="survey.published" >
+																	<span data-ng-click="addRisk()"  class="hand-cursor vertical_hght"><img src="ui/img/plus_icon.png" class="icon-large"
+																		data-ng-hide="survey.published" /> Add risk </span>
+																</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="row">
+																	&nbsp;
+																</div>
+																<div id="verticalscroll" class="riskdescrip">
+																	<table class="table table-hover borderless last-bdr-non" >
+																		<tbody>
+																			<tr data-ng-repeat="risk in survey.risks">
+																				<td>
+																					<input type="text" ng-change="riskEntered()"
+																					onKeyPress="return validateField(event)"
+																					onblur="toAlphaNumeric(id)" id="riskNameId"
+																					placeholder="Risk Name" class="form-control"
+																					data-ng-model="risk.name" maxlength="70"
+																					ng-disabled="!risk.editMode"
+																					data-ng-required />
+																				</td>
+																				<td>
+																					<input type="text"
+																					placeholder="Risk Description"  ng-change="riskEntered()"
+																					onKeyPress="return denyScriptTag(event)"
+																					onblur="removeScriptTag(id)" id="riskDescriptionId"
+																					class="form-control"
+																					data-ng-model="risk.desc" maxlength="300"
+																					ng-disabled="!risk.editMode"
+																					data-ng-required />
+																				</td>
+																				<td class="text-center" data-ng-hide="risk.editMode  || survey.published">
+																					<div class="set-height">
+																						<img src="ui/img/pencil_icon2.png"
+																						class="icon-lg"
+																						data-ng-click="risk.editMode = true" />
+																					</div>
+																				</td>
+																				<td class="text-center" data-ng-show="risk.editMode">
+																					<div class="set-height">
+																						<img
+																					src="ui/img/tick_icon.png" class="icon-lg"
+																					data-ng-click="risk.editMode = false" />
+																					
+																					</div>
+																					</td>
+																				<td class="text-center" data-ng-hide="survey.published">
+																					<div class="set-height">
+																					<img src="ui/img/trash_icon2.png" class="icon-lg"
+																					data-ng-click="remove($index)" />
+																					</div>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td></td>
+																				<td></td>
+																				<td></td>
+																				<td ></td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+																
+																<!-- 
+																<div data-ng-hide="survey.published" >
+																	<span data-ng-click="addRisk()"  class="hand-cursor"><img src="ui/img/plus_icon.png" class="icon-large"
+																		data-ng-hide="survey.published" /> Add risk </span>
+																</div>
+																 -->
+																
+																
+															</div>
+														</div>
+
+
+
+														<div class="row">
+															<div class="col-md-12">
+																<div class="row padding-medium border-bottom">
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-none nowrap">
+																		<div class="form-group no-vert-margin" data-show-errors>
+																			<label class=" control-label" translate>Likelihood</label>
+																			<br /> <span class="small-text" translate>Vertical Axis</span>
+																		</div>
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="lVeryLowId" name="lVeryLow" required
+																			maxlength="15" class="form-control sharp-edges"
+																			onblur="toScale(id)" placeholder=" Very Low"
+																			data-ng-model="survey.likelihood[0]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="lLowId" name="lLow" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" Low"
+																			data-ng-model="survey.likelihood[1]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="lMediumId" name="lMedium" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" Medium"
+																			data-ng-model="survey.likelihood[2]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="lHighId" name="lHigh" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" High"
+																			data-ng-model="survey.likelihood[3]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="lVeryHighId" name="lVeryHigh" required
+																			maxlength="15" class="form-control sharp-edges"
+																			onblur="toScale(id)" placeholder=" Very High"
+																			data-ng-model="survey.likelihood[4]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	
+																	<div class="col-md-10 col-md-offset-2">
+																		<span class="small-text" translate>Enter
+																				a scale from least to most</span>
+																	</div>
+																	
+																</div>
+
+
+																<div class="row padding-medium border-bottom">
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-none form-group no-vert-margin"
+																		data-show-errors>
+																		<label class=" control-label" translate>Severity</label>
+																		<br /> <span class="small-text" translate>Horizontal Axis</span>
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="veryLowId" name="veryLow" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" Very Low"
+																			data-ng-model="survey.severity[0]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="lowId" name="low" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" Low"
+																			data-ng-model="survey.severity[1]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="mediumId" name="medium" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" Medium"
+																			data-ng-model="survey.severity[2]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="highId" name="high" required maxlength="15"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" High"
+																			data-ng-model="survey.severity[3]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)"
+																			id="veryHighId" name="veryHigh" required
+																			maxlength="15" class="form-control sharp-edges"
+																			onblur="toScale(id)" placeholder=" Very High"
+																			data-ng-model="survey.severity[4]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	
+																	<div class="col-md-10 col-md-offset-2">
+																		<span class="small-text" translate>Enter
+																			a scale from least to most</span>
+																	</div>
+																	
+																</div>
+																<div class="row padding-medium border-bottom">
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-none form-group no-vert-margin"
+																		data-show-errors>
+																		<label class=" control-label" translate>Velocity</label>
+																		<br /> <span class="small-text" translate>Slider Scale</span>
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)" id="vl"
+																			name="immediately" required maxlength="20"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" Immediately"
+																			data-ng-model="survey.velocity[0]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)" id="l"
+																			name="6M" required maxlength="20"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" 6 Months"
+																			data-ng-model="survey.velocity[1]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)" id="m"
+																			name="12M" required maxlength="20"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" 12 Months"
+																			data-ng-model="survey.velocity[2]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)" id="h"
+																			name="24M" required maxlength="20"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" 24 Months"
+																			data-ng-model="survey.velocity[3]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	<div
+																		class="col-lg-2 col-sm-2 col-xs-2 padding-sides-small form-group no-vert-margin"
+																		data-show-errors>
+																		<input type="text"
+																			onKeyPress="return validateScaleField(event)" id="vh"
+																			name="48M" required maxlength="20"
+																			class="form-control sharp-edges" onblur="toScale(id)"
+																			placeholder=" > 48 months"
+																			data-ng-model="survey.velocity[4]"
+																			data-ng-disabled="survey.published">
+																	</div>
+																	
+																	<div class="col-md-10 col-md-offset-2">
+																		<span class="small-text" translate>Set
+																			a scale for speed of contagion</span>
+																	</div>
+																	
+																	
+																	<div
+																		class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-large center-block">
+																		<button data-ng-click="saveSurvey()"
+																			class="btn btn-success gButton big-button pull-right"
+																			data-ng-hide="survey.published"
+																			data-ng-disabled="saveInProgress">
+																			Save <span
+																				class="glyphicon glyphicon-refresh glyphicon-spin ng-hide"
+																				data-ng-show="saveInProgress"></span>
+																		</button>
+																		<a
+																			href="engagementManager.html#/dashboard/{{engagement.taskId}}"
+																			class="btn btn-success oButton ng-scope pull-right"
+																			data-ng-hide="survey.published" translate="">Cancel</a>
+																		<a
+																			href="engagementManager.html#/dashboard/{{engagement.taskId}}"
+																			class="btn btn-success oButton ng-scope ng-hide pull-right"
+																			data-ng-show="survey.published" translate="">Back</a>
+																		
+																	</div>
+																	<div data-ng-show="surveySavedSuccessfully">
+																		<div class="col-md-12">
+																			<div class="alert alert-success sharp-edges success-alert">
+																			{{'Survey has been saved successfully' | translate}}  																		
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="parent_show"  data-ng-hide="survey.published || !(surveyCreated)" > 
+													<div class="skyblue_strip" id="shareDraft">
+														<div class="row">
+															<div class="col-xs-5">
+															<p class="no-vert-margin text-xlarge font_white">
+																Share Draft</p>
+															</div>
+															<div class="col-xs-7">
+																<p class="no-vert-margin text-medium font_white">
+																<span class="icon-Unpublished_2">
+                													<span class="path1"></span><span class="path2"></span>
+               																 </span>
+																Unpublished / Draft</p>
+															</div>
+														</div>
+													</div>
+
+												<div class="row">
+												
+												<div class="col-md-12">
+														<div class="panel panel-default sharp-edges">
+						
+															<div class="panel-body ">
+																<div class="row" >
+														         <div class="col-md-6 col-sm-12">
+														            <span class="gray_color">Select file to bulk upload:</span>
+														            <button
+														               class="btn btn-default success gButton medium-button btn-success "
+														               ng-disabled="survey.published" 
+														               data-ng-click="participantEmailUpload()">Browse</button>
+														         </div>
+														         <div class="col-md-6 col-sm-12">
+														            <div class="row">
+														               <div class="col-xs-9">
+														               		<div class="row">
+														               			<div class="col-md-8">
+														               				<div class="pull-right">
+														                     <span class="clientcount width100 bgtransparent">Total Recipients:</span>
+														                  </div>
+														               			</div>
+														               			<div class="col-md-4">
+														               				 <span class="clientcount width100">{{participantEmails.length}}</span>
+														               			</div>
+														               		</div>
+														                  
+														               </div>
+														               <div class="col-xs-3">
+														                  <span data-ng-click="addParticipantEmail()" class="hand-cursor vertical_hght ">
+																		<img src="ui/img/plus_icon.png" class="icon-large"></img>Recipient
+																		</span>
+														               </div>
+														         </div>
+														        </div>
+														      </div>
+														      <div class="row">
+																	&nbsp;
+																</div>
+														   <div id="verticalscroll" class="riskdescrip table-responsive">
+																		<table class="table table-hover borderless last-bdr-non">
+																			<tbody>
+																				<tr data-ng-repeat="participant in participantEmails">
+																				<td>
+																					<input
+																					type="text" placeholder="First Name"
+																					class="form-control"
+																					data-ng-model="participant.name" maxlength="70"
+																					data-ng-required
+																					ng-disabled="!participant.editMode" />
+																				</td>
+																				<td>
+																					<input
+																					type="text" placeholder="Surname"
+																					class="form-control"
+																					data-ng-model="participant.lname" maxlength="70"
+																					data-ng-required
+																					ng-disabled="!participant.editMode" />
+																				</td>
+																				<td>
+																					<input
+																					type="text" placeholder="Email"
+																					class="form-control"
+																					data-ng-model="participant.emailId" maxlength="70"
+																					data-ng-required
+																					ng-disabled="!participant.editMode" />
+																				</td>
+																				<td class="text-center">
+																				<div class="set-height">
+																				<img src="ui/img/pencil_icon2.png"
+																					class="icon-lg"
+																					data-ng-click="participant.editMode = true"
+																					data-ng-hide="participant.editMode">
+																					<img
+																					src="ui/img/tick_icon.png" class="icon-lg"
+																					data-ng-show="participant.editMode"
+																					data-ng-click="validateParticipant(participant)">
+																				</div>
+																					</td>
+																				<td class="text-center">
+																				<div class="set-height">
+																				<img src="ui/img/trash_icon2.png"
+																					class="icon-lg"
+																					data-ng-click="removeParticipantEmail($index)">
+																					</div> 
+																			</td>
+																					
+																			</tr>
+																			  <tr>
+																                  <td></td>
+																                  <td></td>
+																                  <td></td>
+																                  <td ></td>
+																               </tr>
+																			</tbody>
+																	</table>
+																	</div>
+																	
+																</div>
+															</div>
+															</div>
+															</div>
+																<div class="row">
+																	<div class="col-md-12">
+																		<p>Enter message to recipients:</p>
+																	</div>
+																</div>
+
+																<div class="row">
+																	<div class="col-md-8">
+																		<textarea data-ng-model="emailNote" class="padding_10"></textarea>
+																		<p class="small-text ng-scope">Please do not modify risks once shared to participants.</p>
+																	</div>
+																	<div class="col-md-4">
+																		<button
+																			class="btn btn-success gButton big-button pull-right"
+																			data-ng-click="sendEmail()" data-ng-disable="survey.published"  >Send Draft
+																		<span class="glyphicon glyphicon-refresh glyphicon-spin" data-ng-show="sendEmailInProgress" ></span>
+																		</button>
+																	</div>
+																	
+																	
+																</div>
+																<div class="alert alert-danger" data-ng-show="showErrorMessage" id="uploadError">
+																	<span translate>{{errorMessage}}</span>
+																</div>
+																											
+																<div class="row" data-ng-show="mailSendSuccessfully">
+																	<div class="col-md-12">
+																		<div class="alert alert-success sharp-edges success-alert">
+																		{{sentEmailNote}}  																		
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</form>
+												<div class="row" data-ng-show="surveyCreated && !survey.published">
+												<div class ="col-md-12 padding-none">
+												<div class="skyblue_strip" id="publish">
+													<div class="row">
+														<div class="col-xs-5">
+															<p class="no-vert-margin text-xlarge font_white">
+																Publish</p>
+														</div>
+														<div class="col-xs-7">
+															
+															<p class="no-vert-margin text-medium font_white">
+															<span class="icon-Unpublished_2">
+                <span class="path1"></span><span class="path2"></span>
+                </span>
+															Unpublished / Draft</p>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-8">
+														<div class="form-group ">
+															<div class="checkboxFive pull-left customgreen">
+																<input type="checkbox" value="1" id="riskListSignedOff"
+																	name="checkbox1"
+																	data-ng-model="survey.riskListSignedOff"
+																	data-ng-disabled="survey.published"> <label
+																	for="riskListSignedOff"></label>
+															</div>
+															<span>Has the risk list been approved by the client?</span>
+														</div>
+
+													</div>
+													<div class="col-md-4">
+														<button onclick="published=1"
+															data-ng-click="confirmPublishSurvey()"
+															class="btn btn-success gButton pull-right big-button "
+															data-ng-disabled="!survey.riskListSignedOff || publishInProgress">
+															Publish <span
+																class="glyphicon glyphicon-refresh glyphicon-spin"
+																data-ng-show="publishInProgress"></span>
+														</button>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														&nbsp;
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+															<button class="btn btn-default pull-right blue-btn arw_dwn"
+															ng-click="navigateToScreen('top')">Go to Top</button>
+													</div>
+												</div>
+												</div>
+												</div>
+											</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+	</div>
+</div>
+
+

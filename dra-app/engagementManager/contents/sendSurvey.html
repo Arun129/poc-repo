@@ -1,0 +1,168 @@
+<div data-ng-controller="sendSurveyController"
+	class="container padding-large">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="breadcrum padding-large paddingleftright">
+				<a href="engagementManager.html#/clientList" translate>My
+					Clients</a> <span class="glyphicon glyphicon-menu-right"></span> <a
+					href="engagementManager.html#/dashboard/{{selectedEngagement.taskId}}">{{selectedEngagement.clientName}}</a>
+				<span class="glyphicon glyphicon-menu-right"></span> <a
+					class="active">{{selectedEngagement.engagementId}}</a>
+			</div>
+		</div>
+	</div>
+
+
+	<form role="form" name="userForm" class=" paddingleftright">
+		<div class="row">
+			<div class="col-md-12">
+				<h1 class="headtitle">
+					{{ 'Engagements' | translate }} <span
+						data-ng-show="tasks != null && tasks.length > 0"> (Count:
+						{{ tasks.length }})</span> <span class="glyphicon glyphicon-refresh"
+						data-ng-click="loadEngagements()"></span>
+				</h1>
+			</div>
+			<div class="col-md-12">
+				<div class="engage_graybg">
+					<div class="row">
+						<div class="col-sm-4">
+							<p>Engagement ID</p>
+							<ul class="list-inline">
+								<li class="idicon fontblue text-xxlarge"><span
+									class="engagementlabel"><img src="ui/img/label.png"
+										alt="" title="" class="icon-lg"></span> <span class="">{{selectedEngagement.engagementId}}</span>
+								</li>
+								<li><a class="fontblue text-xlarge"
+									href="#/editengagement/{{selectedEngagement.taskId}}">Edit</a>
+							</ul>
+						</div>
+						<div class="col-sm-8">
+							<p class="padding-sides-medium ">Client Name</p>
+							<p class="fontblue text-xxlarge padding-large font-twenty">{{selectedEngagement.clientName}}</p>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="survey_tab">
+					<ul>
+						<li>
+							<div class="tab">Surveys</div>
+						</li>
+						<li data-ng-hide="true">
+							<button class="tab new" disabled="disabled" data-ng-hide="true"></button>
+							<p data-ng-hide="true" class="bold">New</p>
+						</li>
+						<li>
+							<button class="tab prepare"
+								onclick="location.href='#/editSurvey'"></button>
+							<p data-ng-hide="selectedEngagement.survey.published"
+								class="bold">Prepare</p>
+							<p data-ng-show="selectedEngagement.survey.published"
+								class="bold">View</p>
+						</li>
+						<li>
+							<button id="send" class="tab send active"></button>
+							<p class="bold">Send</p>
+						</li>
+						<li>
+							<button class="tab response"
+								data-ng-click="navigateTodashboard()"></button>
+							<p class="bold">Responses</p>
+						</li>
+					</ul>
+				</div>
+
+				<div class="skyblue_strip">
+					<div class="row">
+						<div class="col-xs-5 ">
+							<p class="no-vert-margin text-xlarge font_white"
+								data-ng-hide="survey.published || surveyCreated"
+								data-ng-show="saveInProgress">Send Survey</p>
+
+						</div>
+						<div class="col-xs-7">
+							<p class="no-vert-margin text-medium font_white published">
+								<span class="icon-Published_2">
+                					<span class="path1"></span><span class="path2"></span>
+                				</span>
+								Published</p>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading custom">
+						<b>Recipient Details</b>
+					</div>
+					<div class="panel-body">
+						<div class="bdr_btm">
+							<p class="bold">Client Lead</p>
+							<div class="row">
+								<div class="col-md-3">
+									<div class="form-group">
+										<input type="text" disabled="disabled"
+											data-ng-value="selectedEngagement.clientFirstName"
+											class="form-control">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<input type="text" disabled="disabled"
+											data-ng-value="selectedEngagement.clientSurName"
+											class="form-control">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<input type="text" disabled="disabled"
+											data-ng-value="selectedEngagement.clientLeadEmail"
+											class="form-control">
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<p class="bold">Enter message to recipient:</p>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-8">
+								<textarea id="messageId"
+									onKeyPress="return denyScriptTag(event)"
+									onblur="removeScriptTag(id)" maxlength="300"
+									class="form-control cs_textarea_fixed_hgt"
+									data-ng-model="emailNote"></textarea>
+								<br />
+								<div class="row" id="sccessVisiblity" style="display: none;">
+									<div class="col-md-12">
+										<div class="alert alert-success sharp-edges success-alert">
+											Your survey was sent successfully to the Client Lead.</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1 padding-large">
+								<!-- <span class="published">
+									 Published
+								</span> -->
+							</div>
+							<div class="col-md-3">
+
+								<button data-ng-click="sendEmail()"
+									class="btn btn-success gButton big-button pull-right">
+									Send&nbsp;<span
+										class="glyphicon glyphicon-refresh glyphicon-spin"
+										data-ng-show="emailInprogress"></span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,71 @@
+<div ng-controller="ClientListCtrl" class="container padding-large">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="row">
+			<div class="col-md-6 col-xs-12">
+				<div class="breadcrum padding-large paddingleftright">
+					<a href="engagementManager.html#/clientList" class="active"
+						translate>My Clients</a> <span
+						class="glyphicon glyphicon-menu-right"></span>
+				</div>
+			</div>
+			<div class="col-md-6 col-xs-12">
+				<ul class="list-inline pull-right">
+					<li class="filter vert_mdle">
+						<div class="form-group margin-top-medium">
+							<form role="form">
+								<!-- Translate functionality commented -->
+								<!--  <input type="text" required="required" maxlength="50" class="form-control" id="usr"  placeholder="Regular Placeholder" translate translate-attr-placeholder="Search Client" translate-value-browser="{{app.browser}}" data-ng-model="searchText"> -->
+								<input type="text" required="required" maxlength="50"
+									class="form-control" id="usr" placeholder="Search"
+									data-ng-model="searchText"> <input type="submit"
+									class="submit" value="">
+							</form>
+						</div>
+					</li>
+
+					<li class="padding-left-only-large neutral-dark-grey bold vert_mdle">{{ 'No. of Clients' | translate }} <span
+						class="clientcount"> {{(filteredClient.length)}} </span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div
+			class="nopadding participantlist col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<span style="float: right; margin-top: -3%; color: #666666;"></span>
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="row">
+						<div class="col-xs-8">
+							<h1 class="headtitle" translate>Client List</h1>
+						</div>
+						<div class="col-xs-4 padding-large text-center">
+							<h5 class="font-twelve text-center"><b>Total engagements:</b></h5>
+
+						</div>
+					</div>
+					<div
+						data-ng-repeat="client in filteredClient = (clientList | filter:searchText)"
+						class="clientlist">
+						<div class="row">
+							<div class="col-xs-8">
+								<div id="test">
+									<span class="ids"><h5
+											class="small margin-top-small margin-bottom-small">
+											<a href="engagementManager.html#/dashboard/{{client.id}}"><b>{{
+												client.name }}</b></a>
+										</h5></span>
+								</div>
+							</div>
+							<div class="col-xs-4 text-center">
+								<div data-ng-show="client.engCountLoaded">
+									<h1
+										class="padding-none text-center margin-top-small margin-bottom-small">{{client.engCount}}</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

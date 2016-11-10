@@ -1,0 +1,293 @@
+<div data-ng-controller="OperationalDatesCtrl" class="container padding-large">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 engage fullwidth">
+		<div class="breadcrum padding-large paddingleftright">
+			<a href="engagementManager.html#/clientList">My Clients</a>
+			<span class="glyphicon glyphicon-menu-right"></span>
+			<a href="engagementManager.html#/dashboard/{{engagement.clientId}}">{{engagement.clientName}}</a>
+			<span class="glyphicon glyphicon-menu-right"></span>
+			<a href="engagementManager.html#/dashboard/{{engagement.taskId}}">{{engagement.engagementId}}</a>
+			<span class="glyphicon glyphicon-menu-right"></span>
+			<a class="active">Scheduler</a>
+		</div>
+	</div>
+		
+	<form role="form" name="operationalDatesForm" class="padding-sides-large nopadding" confirm-on-exit>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="padding-none">
+					<h1 class="headtitle">{{ 'Engagements' | translate }} <span data-ng-show="engagementList != null && engagementList.length > 0"> (Count: {{ engagementList.length }})</span>
+						<span class="glyphicon glyphicon-refresh" data-ng-click="loadEngagements()" ></span>
+					</h1>
+					<div class="engage_graybg">
+						<div class="row">
+							<div class="col-sm-4">
+								<p>
+									 Engagement ID
+								</p>
+								<ul class="list-inline">
+									<li class="idicon fontblue text-xxlarge">
+										<span class="engagementlabel">
+											<img src="ui/img/label.png" alt="" title="" data-ng-show="!engagement.survey.closed" class="icon-lg">  
+											<img src="ui/img/labelblock.png" alt="" title=""  data-ng-show="engagement.survey.closed" class="icon-lg">										
+										</span>
+										<span class="">{{engagement.engagementId}}</span></li>
+								</ul>
+							</div>
+							<div class="col-sm-8">
+								<p class="padding-sides-medium">Client Name</p>
+								<p class="fontblue text-xxlarge padding-large font-twenty">{{engagement.clientName}}</p>
+							</div>
+						</div>
+					</div>
+
+					<ul class="nav nav-tabs">
+						<li class="paddingright15"><a data-toggle="tab" href="#/editengagement/{{engagement.clientName}}" class="paddingleftright">Engagement Details</a></li>
+						<li class="active"><a data-toggle="tab" href="#operationalDate" class="paddingleftright">Scheduler</a></li>
+						<li class="pull-right"><a href="engagementManager.html#/dashboard/{{engagement.taskId}}" > 
+										&lt; Back to Engagement page</a></li>
+					</ul>
+		
+					<div class="tab-content">
+						<div id="createengagement" class="tab-pane fade in active padding-sides-large paddingleftright">
+							<h1 class="headtitle">Operational Dates</h1>
+							<div class="createengag operational">
+								<form name="operationalDates" confirm-on-exit>
+							      	<div class="control full-width bottom-padding-large field pointer-down" data-ng-show="!engagement.secRegistrant && !engagement.platinumAccount">
+							      		<label data-ng-show="opDates.kickOffMeetingWithClientLead" class="show-hide text-muted ">Date of Kick off meeting with client lead</label>
+							          	<input class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}" data-ng-click="calendar.open($event, 'kickOffMeetingWithClientLead', 'planningMeetingForWorkshops')" 
+							          	data-ng-change="calendar.change($event, 'kickOffMeetingWithClientLead', 'planningMeetingForWorkshops')" 
+							          	data-ng-model="opDates.kickOffMeetingWithClientLead"
+							          	 data-is-open="calendar.opened.kickOffMeetingWithClientLead" 
+							          	data-datepicker-options="calendar.dateOptions"  data-close-text="Close"  placeholder="Date of Kick off meeting with client lead" />
+							          	<div class="triang_01">
+										    <div class="triangle"></div>
+										</div>				          	
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down" data-ng-show="engagement.secRegistrant || engagement.platinumAccount">
+							      		<label data-ng-show="opDates.kickOffMeetingWithClientLead" class="show-hide text-muted ">Date of Kick off meeting with client lead</label>
+							          	<input class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}" data-ng-click="calendar.open($event, 'kickOffMeetingWithClientLead', 'kickOffMeetingWithGCE')" 
+							          	data-ng-change="calendar.change($event, 'kickOffMeetingWithClientLead', 'kickOffMeetingWithGCE')" 
+							          	data-ng-model="opDates.kickOffMeetingWithClientLead" data-is-open="calendar.opened.kickOffMeetingWithClientLead" 
+							          	data-datepicker-options="calendar.dateOptions"  data-close-text="Close"  placeholder="Date of Kick off meeting with client lead" />
+							          	<div class="triang_01">
+										    <div class="triangle"></div>
+										</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down" data-ng-show="engagement.secRegistrant || engagement.platinumAccount">
+							      		<label data-ng-show="opDates.kickOffMeetingWithGCE" class="show-hide text-muted ">Date of kick off meeting with Global Centre of Excellence (GCE)</label>
+							          	<input class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}" 
+							          	data-ng-click="calendar.open($event, 'kickOffMeetingWithGCE', 'planningMeetingForWorkshops')"  
+							          	data-ng-change="calendar.change($event, 'kickOffMeetingWithGCE', 'planningMeetingForWorkshops')" 
+							          	data-ng-model="opDates.kickOffMeetingWithGCE" data-is-open="calendar.opened.kickOffMeetingWithGCE" 
+							          	data-datepicker-options="calendar.dateOptions.kickOffMeetingWithGCE"  data-close-text="Close"  
+							          	placeholder="Date of kick off meeting with Global Centre of Excellence (GCE)"
+							          	data-ng-disabled="!calendar.enabled.kickOffMeetingWithGCE && !opDates.kickOffMeetingWithClientLead"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.kickOffMeetingWithGCE && !opDates.kickOffMeetingWithClientLead}">
+										    <div class="triangle"></div>
+										</div>
+							          	
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.planningMeetingForWorkshops" class="show-hide text-muted ">Date of Planning meeting with Engagement partner and client lead for workshops</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'planningMeetingForWorkshops', 'interviewMeetingWithParticipants')"  
+							          	data-ng-change="calendar.change($event, 'planningMeetingForWorkshops', 'interviewMeetingWithParticipants')" 
+							          	data-ng-model="opDates.planningMeetingForWorkshops" data-is-open="calendar.opened.planningMeetingForWorkshops" 
+							          	data-datepicker-options="calendar.dateOptions.planningMeetingForWorkshops"  data-close-text="Close"  
+							          	placeholder="Date of Planning meeting with Engagement partner and client lead for workshops" 
+							          	data-ng-disabled="!calendar.enabled.planningMeetingForWorkshops && ((engagement.secRegistrant || engagement.platinumAccount ) ? !opDates.kickOffMeetingWithGCE : !opDates.kickOffMeetingWithClientLead)"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.planningMeetingForWorkshops && ((engagement.secRegistrant || engagement.platinumAccount ) ? !opDates.kickOffMeetingWithGCE : !opDates.kickOffMeetingWithClientLead)}">
+										    <div class="triangle"></div>
+										</div>
+			
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.interviewMeetingWithParticipants" class="show-hide text-muted ">Date of interview with key participants (1)</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'interviewMeetingWithParticipants', 'workshops')"  
+							          	data-ng-change="calendar.change($event, 'interviewMeetingWithParticipants', 'workshops')" 
+							          	data-ng-model="opDates.interviewMeetingWithParticipants" 
+							          	data-is-open="calendar.opened.interviewMeetingWithParticipants" 
+							          	data-datepicker-options="calendar.dateOptions.interviewMeetingWithParticipants"  data-close-text="Close"  
+							          	placeholder="Date of interviews with key participants (Allows multiple dates)" 
+							          	data-ng-disabled="!calendar.enabled.interviewMeetingWithParticipants && !opDates.planningMeetingForWorkshops"/>
+							          	<ul class="nav navbar-nav">
+							          		<li>
+							          			<img src="ui/img/plus_icon.png" class="icon-large pull-right" data-ng-show="opDates.interviewMeetingWithParticipantsList == null || opDates.interviewMeetingWithParticipantsList.length == 0" 
+									          		data-ng-click="addInterviewDate()" data-ng-hide="!opDates.interviewMeetingWithParticipants" />
+							          		</li>
+							          	</ul>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.interviewMeetingWithParticipants && !opDates.planningMeetingForWorkshops}">
+										    <div class="triangle"></div>
+										</div>
+							          	
+							      	</div>
+							      	<div class="padding-large margin-bottom-medium" data-ng-show="opDates.interviewMeetingWithParticipantsList != null && opDates.interviewMeetingWithParticipantsList.length > 0" >
+								      	<div class="control full-width bottom-padding-large field pointer-down" data-ng-repeat="interviewDates in opDates.interviewMeetingWithParticipantsList track by $index">
+								      		<label class="show-hide text-muted ">Date of interview with key participants ({{$index+2}})</label>
+								          	<input type="text" class="form-control datepicker" onkeydown="return false"
+								          	data-uib-datepicker-popup="{{format}}" 
+								          	data-ng-model="opDates.interviewMeetingWithParticipantsList[$index]" 
+								          	data-ng-click="calendar.openInterViewDate($event, $index)"
+								          	data-is-open="calendar.interviewDateOpened[$index].opened" 
+								          	data-datepicker-options="calendar.interviewDateOptions[$index]"  data-close-text="Close"  
+								          	placeholder="Date of interview with key participants" />
+								          	<ul class="nav navbar-nav">
+								          		<li>
+								          			<img src="ui/img/plus_icon.png" class="icon-large pull-right" data-ng-show="$index == (opDates.interviewMeetingWithParticipantsList.length-1) && opDates.interviewMeetingWithParticipantsList[$index]" data-ng-click="addInterviewDate()">
+								          		</li>
+								          		<li>
+								          			<img src="ui/img/trash_icon2.png" class="icon-large pull-right" data-ng-click="removeInterviewDate($index)" data-ng-show="$index == (opDates.interviewMeetingWithParticipantsList.length-1)">
+								          		</li>
+								          	</ul>
+								      	</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.workshops" class="show-hide text-muted ">Date of workshop (1)</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'workshops', 'commencementOfSurveyProcess')"  
+							          	data-ng-change="calendar.change($event, 'workshops', 'commencementOfSurveyProcess')" 
+							          	data-ng-model="opDates.workshops" 
+							          	data-is-open="calendar.opened.workshops" 
+							          	data-datepicker-options="calendar.dateOptions.workshops"  
+							          	data-close-text="Close"  
+							          	placeholder="Date of workshop (Allows multiple dates)"
+							          	data-ng-disabled="!calendar.enabled.workshops && !opDates.interviewMeetingWithParticipants"/>
+							          	<ul class="nav navbar-nav">
+							          		<li>
+							          			<img src="ui/img/plus_icon.png" class="icon-large pull-right" data-ng-show="opDates.workshopsList == null || opDates.workshopsList.length == 0" 
+									          		data-ng-click="addWorkshopDate()" data-ng-hide="!opDates.workshops" />
+							          		</li>
+							          	</ul>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.workshops && !opDates.interviewMeetingWithParticipants}">
+										    <div class="triangle"></div>
+										</div>
+							      	</div>
+							      	<div class="padding-large margin-bottom-medium" data-ng-show="opDates.workshopsList != null && opDates.workshopsList.length > 0" >
+										<div class="control full-width bottom-padding-large field pointer-down" data-ng-repeat="workshopDates in opDates.workshopsList track by $index">
+								      		<label class="show-hide text-muted ">Date of workshop ({{$index+2}})</label>
+								          	<input type="text" class="form-control datepicker" onkeydown="return false"
+								          	data-uib-datepicker-popup="{{format}}"
+								          	data-ng-click="calendar.openWorkshopDate($event, $index)"
+								          	data-ng-model="opDates.workshopsList[$index]" 
+								          	data-is-open="calendar.workshopDateOpened[$index].opened" 
+								          	data-datepicker-options="calendar.workshopDateOptions[$index]"  data-close-text="Close"  
+								          	placeholder="Date of workshop" />
+								          	<ul class="nav navbar-nav">
+								          		<li>
+								          			<img src="ui/img/plus_icon.png" class="icon-large pull-right" data-ng-show="$index == (opDates.workshopsList.length-1) && opDates.workshopsList[$index]" data-ng-click="addWorkshopDate()" />
+								          		</li>
+								          		<li>
+								          			<img src="ui/img/trash_icon2.png" class="icon-large pull-right" data-ng-show="$index == (opDates.workshopsList.length-1) " data-ng-click="removeWorkshopDate($index)">
+								          		</li>
+								          	</ul>
+								      	</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.commencementOfSurveyProcess" class="show-hide text-muted ">Date of commencement of survey process / expert elicitation</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'commencementOfSurveyProcess', 'closerOfSurveyProcess')"  
+							          	data-ng-change="calendar.change($event, 'commencementOfSurveyProcess', 'closerOfSurveyProcess')" 
+							          	data-ng-model="opDates.commencementOfSurveyProcess" data-is-open="calendar.opened.commencementOfSurveyProcess" 
+							          	data-datepicker-options="calendar.dateOptions.commencementOfSurveyProcess"  data-close-text="Close"  
+							          	placeholder="Date of commencement of survey process / expert elicitation" 
+							          	data-ng-disabled="!calendar.enabled.commencementOfSurveyProcess && !opDates.workshops"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.commencementOfSurveyProcess && !opDates.workshops}">
+										    <div class="triangle"></div>
+										</div>
+			
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.closerOfSurveyProcess" class="show-hide text-muted ">Date to close survey process / expert elicitation</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'closerOfSurveyProcess', 'expectedFirstDraft')"  
+							          	data-ng-change="calendar.change($event, 'closerOfSurveyProcess', 'expectedFirstDraft')" 
+							          	data-ng-model="opDates.closerOfSurveyProcess" data-is-open="calendar.opened.closerOfSurveyProcess" 
+							          	data-datepicker-options="calendar.dateOptions.closerOfSurveyProcess"  data-close-text="Close"  
+							          	placeholder="Date to close survey process / expert elicitation" 
+							          	data-ng-disabled="!calendar.enabled.closerOfSurveyProcess && !opDates.commencementOfSurveyProcess"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.closerOfSurveyProcess && !opDates.commencementOfSurveyProcess}">
+										    <div class="triangle"></div>
+										</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.expectedFirstDraft" class="show-hide text-muted ">Date expected first draft of the report</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'expectedFirstDraft', 'discussionOfFirstDraft')"  
+							          	data-ng-change="calendar.change($event, 'expectedFirstDraft', 'discussionOfFirstDraft')" 
+							          	data-ng-model="opDates.expectedFirstDraft" data-is-open="calendar.opened.expectedFirstDraft" 
+							          	data-datepicker-options="calendar.dateOptions.expectedFirstDraft"  data-close-text="Close"  
+							          	placeholder="Date expected first draft of the report" 
+							          	data-ng-disabled="!calendar.enabled.expectedFirstDraft && !opDates.closerOfSurveyProcess"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.expectedFirstDraft && !opDates.closerOfSurveyProcess}">
+										    <div class="triangle"></div>
+										</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.discussionOfFirstDraft" class="show-hide text-muted ">Date of discussion of first draft with client lead</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'discussionOfFirstDraft', 'finalWorkshop')"  
+							          	data-ng-change="calendar.change($event, 'discussionOfFirstDraft', 'finalWorkshop')" 
+							          	data-ng-model="opDates.discussionOfFirstDraft" data-is-open="calendar.opened.discussionOfFirstDraft" 
+							          	data-datepicker-options="calendar.dateOptions.discussionOfFirstDraft"  data-close-text="Close"  
+							          	placeholder="Date of discussion of first draft with client lead" 
+							          	data-ng-disabled="!calendar.enabled.discussionOfFirstDraft && !opDates.expectedFirstDraft"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.discussionOfFirstDraft && !opDates.expectedFirstDraft}">
+										    <div class="triangle"></div>
+										</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.finalWorkshop" class="show-hide text-muted ">Date of Final Workshop to discuss results</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'finalWorkshop', 'finalReportDelivery')"  
+							          	data-ng-change="calendar.change($event, 'finalWorkshop', 'finalReportDelivery')" 
+							          	data-ng-model="opDates.finalWorkshop" data-is-open="calendar.opened.finalWorkshop" 
+							          	data-datepicker-options="calendar.dateOptions.finalWorkshop"  data-close-text="Close"  
+							          	placeholder="Date of Final Workshop to discuss results" 
+							          	data-ng-disabled="!calendar.enabled.finalWorkshop && !opDates.discussionOfFirstDraft"/>
+							          	<div class="triang_01" ng-class="{inactive: !calendar.enabled.finalWorkshop && !opDates.discussionOfFirstDraft}">
+										    <div class="triangle"></div>
+										</div>
+							      	</div>
+							      	<div class="control full-width bottom-padding-large field pointer-down">
+							      		<label data-ng-show="opDates.finalReportDelivery" class="show-hide text-muted ">Date of final report delivery</label>
+							          	<input type="text" class="form-control datepicker" onkeydown="return false"
+							          	data-uib-datepicker-popup="{{format}}"
+							          	data-ng-click="calendar.open($event, 'finalReportDelivery', '')"  
+							          	data-ng-change="calendar.change($event, 'finalReportDelivery', '')" 
+							          	data-ng-model="opDates.finalReportDelivery" data-is-open="calendar.opened.finalReportDelivery" 
+							          	data-datepicker-options="calendar.dateOptions.finalReportDelivery"  data-close-text="Close"  
+							          	placeholder="Date of final report delivery" 
+							          	data-ng-disabled="!calendar.enabled.finalReportDelivery && !opDates.finalWorkshop"/>
+							      	</div>
+							      	
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-md-offset-4 col-lg-offset-4 padding-right_5">
+							<a href="engagementManager.html#/dashboard/{{engagement.clientId}}"  class="btn btn-success oButton pull-right"><span class="createsur">Cancel</span></a>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 padding-left">	
+							<a href="engagementManager.html#/dashboard/{{engagement.clientId}}" data-ng-click="saveDates()" class="btn btn-success gButton big-button pull-left">
+								Save
+							</a>
+						</div>
+					</div>
+				</div>
+ 			</div>
+ 		</div>
+ 	</form>
+ </div>

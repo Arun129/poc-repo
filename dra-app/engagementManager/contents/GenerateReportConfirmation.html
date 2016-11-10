@@ -1,0 +1,49 @@
+<div class="browse_section">
+	<div class="modal-header modal-header-primary">
+		<button type="button" class="close"
+			data-ng-click="closeGenerateReportPopup()">&times;</button>
+		<h4 class="modal-title">Generate Report</h4>
+	</div>
+	<div class="modal-body pull-left full-width">
+		
+		<div class="row">
+			<div class="col-md-4"><label>Format</label></div>
+			<div class="col-md-4">
+				<div class="pull-left">
+					<input type="radio" value="1" id="riskListSignedOff" ng-model="fileType" name="checkbox1" class="ng-pristine ng-untouched ng-valid ng-empty"> 
+					<label for="riskListSignedOff"></label>
+				</div>
+				<span>.PPTX</span>
+			</div>
+			<div class="col-md-4">
+				<div class="pull-left">
+					<input type="radio" value="2" id="riskList" name="checkbox1" class="ng-pristine ng-untouched ng-valid ng-empty"> 
+					<label for="riskList"></label>
+				</div>
+				<span>.XLSX</span>
+			</div>
+			
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="pull-right header-margin-top">
+					<button class="btn btn-success oButton medium-button" type="button"
+					data-ng-click="closeGenerateReportPopup()">Cancel</button>
+			
+			
+				<button class="btn btn-success gButton medium-button  "
+					type="button" data-ng-click="generateSummary()">Generate</button>
+				</div>
+			</div>
+				
+			
+		</div>
+		
+		
+		
+		
+		
+	</div>
+</div>

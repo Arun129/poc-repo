@@ -1,0 +1,54 @@
+<header class="above-all container padding-none" ng-controller="headerCtrl">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<div class="navbar-brand padding-none">
+					<div class="navbar-logo">
+						<span class="fa fa-bars fa-2x hamburger-menu" popover-placement="bottom-left" uib-popover-template="'user_app_list.html'" popover-trigger="outsideClick" popover-animation="false" role="button"></span>
+						<img src="./ui/img/kpmg-header-logo.png" alt="logo" class="margin-sides-large"/>
+					</div>
+					
+							<div class="participant-header-font-style-safari header-margin-top padding-none float-left">
+								<span class="header-font-style">Dynamic Risk Assessment&nbsp;&nbsp;&nbsp;</span>
+							</div>
+							<div class="participant-header-font-style-safari header-margin-top padding-none float-left">
+								<span class="kpmg-blue-bg padding-small">{{userRole}}</span>
+							</div>
+						
+				</div>
+			</div>
+			
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav navbar-right">
+		        <li class="dropdown">
+		          <button popover-placement="bottom-right" uib-popover-template="'user_info_popover.html'" popover-trigger="outsideClick" popover-animation="false" role="button" class="linkButton user_name"><img src="ui/img/user.png" class="icon-lg">{{ 'Welcome'  | translate}} {{user_info.displayName}}&nbsp;&nbsp;<i class="fa fa-chevron-down" style="color: #00468f" aria-hidden="true"></i></button>
+		        </li>
+		      </ul>
+		    </div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+	
+	 <script type="text/ng-template" id="user_app_list.html">
+	<div id="app_list">
+		<ul class="nav navbar-nav">
+			<li ng-repeat="app in app_list" class="border-bottom full-width"><a
+				href="{{app.Url}}">{{ app.Name }}<br />
+				<span class="text-muted small casserv">{{app.Description}}</span></a></li>
+		</ul>
+	</div>
+	</script> 
+	<!-- 
+	<li class="nav border-bottom full-width padding-large">
+					{{user_info.email}} &nbsp;&nbsp;  ({{user_info.givenName + " " + $scope.user_info.familyName}})
+	</li> -->
+	
+	<script type="text/ng-template" id="user_info_popover.html">
+        <div id="user_info" class="user-sec">
+			<ul class="nav navbar-nav">
+				
+	    		<li > <a href="../logout"  class="logout">Logout</a></li>    
+			</ul>
+		</div>
+    </script>
+	
+</header>

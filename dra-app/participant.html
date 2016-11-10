@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="participantApp">
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Dynamic Risk Assessment</title>
+	<link rel="shortcut icon" href="" type="image/x-icon" />
+    <link href="ui/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="ui/css/style.css" type="text/css" rel="stylesheet">
+    <link href="ui/css/custom.css"  type="text/css" rel="stylesheet">
+    <link href="ui/css/fonts.css"  type="text/css" rel="stylesheet">
+	<link href="ui/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+
+	<!-- Stylesheet for graph -->
+    <link href="ui/css/graph.css" type="text/css" rel="stylesheet">
+
+	<!-- Stylesheet for Sweet alert -->
+	<link href="ui/css/sweetalert.css" type="text/css" rel="stylesheet">
+    
+	<!-- jQuery and Bootstarp -->
+	<script src="ui/js/lib/jquery-2.1.1.js"></script>
+	<script src="ui/js/lib/bootstrap.min.js"></script>
+	<script src="ui/js/lib/moment.min.js"></script>
+
+    <!-- Angular components -->
+    <script src="ui/js/util.js"></script>
+    <script src="ui/js/lib/angular.js"></script>
+	<script src="ui/js/lib/angularRoute.js"></script>
+	<script src="ui/js/lib/ngSweetAlert.min.js"></script>
+	<script src="ui/js/lib/sweetalert.min.js"></script>
+	<script src="ui/js/lib/sweetalert.min.js"></script>
+	
+	<!--  Slider Component -->
+	<link href="ui/css/rzslider.min.css" type="text/css" rel="stylesheet">
+    <script src="ui/js/lib/rzslider.min.js"></script>
+    <script src="ui/js/lib/underscore.js"></script>
+
+	<!-- UI Angular components -->
+    <script src="ui/js/lib/angular-animate.min.js"></script>
+    <script src="ui/js/lib/ui-bootstrap-tpls-1.3.2.min.js"></script>
+
+	    <!-- Translate plugin  -->
+    <script src="ui/js/lib/angular-translate.js"></script>
+    <script src="ui/js/lib/angular-cookies.js"></script>
+    <script src="ui/js/lib/angular-translate-storage-cookie.js"></script>
+    <script src="ui/js/lib/angular-translate-loader-static-files.js"></script>
+    <script src="ui/js/lib/angular-translate-handler-log.js"></script>
+    <script src="ui/js/lib/angular-sanitize.js"></script>
+
+   <!-- PDF converter --> 
+    <script src="ui/js/lib/html2canvas.js"></script>
+	<script src="ui/js/lib/jspdf.debug.js"></script>
+	
+	<!-- RequiredJs stuff -->
+	<script src="ui/js/lib/require.js"></script>
+	<script src="ui/js/graph/configure.js"></script>
+	
+	<script src="participant/participantApp.js"></script>
+    <script src="ui/js/lib/ai.js"></script>
+<!--     <script src="ui/js/ApplicationInsights.json"></script> -->
+
+    <script src="ui/js/ApplicationInsights.js"></script>
+	
+</head>
+<body>
+	<section class="cs_participant_footer" data-ng-view ></section>
+	<ng-include src="'footerParticipant.html'"></ng-include>
+</body>
+
+<script src="ui/js/lib/common.js"></script>
+
+</html>
