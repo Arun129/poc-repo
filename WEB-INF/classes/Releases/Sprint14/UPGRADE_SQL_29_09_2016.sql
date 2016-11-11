@@ -1,1 +1,0 @@
-ALTER TABLE measurement ALTER COLUMN magnitude [numeric](8, 5); 
